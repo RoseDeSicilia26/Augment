@@ -1,0 +1,20 @@
+Crop Type
+Cation Exchange Capacity
+Conductivity
+Soil Organic Carbon
+Bulk density
+Soil texture
+Field Operation Ploughing
+Field Operation Fertilizer
+Irrigation
+Soil moisture
+Soil temperature
+Rainfall volume
+Rainfall timing
+Min Temperature
+Max Temperature
+Farm size
+Location
+Farm yield
+Technology used
+Livestock
