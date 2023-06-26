@@ -166,7 +166,7 @@ class Augment():
         return user_prompt, system_prompt
     
     def relationships_prompt(self):
-        system_prompt = f"You are a helpful causality assistant with expertise in causal inference. I will provide you with the dataset schema (where each variable description) that I am using to study the causal relationship between the treatment {self.treatment} and outcome {self.outcome}. I will then ask you to identify the variables confounding that relationship, where a confounding variable is one that is a direct cause/parent of both the treatment {self.treatment} and the outcome {self.outcome}. I will also that you explain your reasoning. Wrap each confounder and reasoning in the form <confounder></confounder><reason></reason>"
+        system_prompt = f"You are a helpful causality assistant with expertise in causal inference. I will provide you with the dataset schema (where each variable description) that I am using to study the causal relationship between the treatment {self.treatment} and outcome {self.outcome}. I will then ask you to identify the variables confounding that relationship, where a confounding variable is one that is a direct cause/parent of both the treatment {self.treatment} and the outcome {self.outcome}. I will also ask that you explain your reasoning. Wrap each confounder and reasoning in the form <confounder></confounder><reason></reason>"
 
         user_prompt = f"Here is the dataset schema that I am using to study the causal relationship between treatment {self.treatment} ({self.schema[self.treatment]}) and outcome {self.outcome} ({self.schema[self.outcome]}).\nHere is the schema\n{self.get_schema()}"
 
