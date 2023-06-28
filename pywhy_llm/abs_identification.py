@@ -2,14 +2,14 @@ from typing import List, Dict, Set, Tuple, Protocol
 
 class Identification_Protocol(Protocol):
 
-    def suggest_backdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[str]:
+    def suggest_backdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]]) -> Set[str]:
         """
         Suggest backdoor path
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Dict[Tuple[str, str], str]: A dictionary where the keys are edges, where it's assumed that parent is first, child is second, and the values are an explanation for how their relationship occurs
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 
@@ -18,14 +18,14 @@ class Identification_Protocol(Protocol):
         """
         pass
 
-    def suggest_frontdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[str]:
+    def suggest_frontdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]]) -> Set[str]:
         """
         Suggest frontdoor path
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Dict[Tuple[str, str], str]: A dictionary where the keys are edges, where it's assumed that parent is first, child is second, and the values are an explanation for how their relationship occurs
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 
@@ -34,14 +34,14 @@ class Identification_Protocol(Protocol):
         """
         pass
 
-    def suggest_iv(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[str]:
+    def suggest_iv(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]]) -> Set[str]:
         """
         Suggest instrumental variables
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Dict[Tuple[str, str], str]: A dictionary where the keys are edges, where it's assumed that parent is first, child is second, and the values are an explanation for how their relationship occurs
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 

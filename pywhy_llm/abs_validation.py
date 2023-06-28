@@ -14,7 +14,7 @@ class Validation_Protocol(Protocol):
         """
         pass
 
-    def validate_relationships(self, variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
+    def validate_relationships(self, variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str]) -> Set[Tuple[str, str]]:
         """
         Validate the suggested relationships
 
@@ -28,14 +28,14 @@ class Validation_Protocol(Protocol):
         """
         pass
 
-    def validate_confounders(self, variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
+    def validate_confounders(self, variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
         """
         Validate set of confounders
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 
@@ -44,14 +44,14 @@ class Validation_Protocol(Protocol):
         """
         pass
 
-    def validate_backdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]], backdoor_set: Set[str]) -> Set[str]:
+    def validate_backdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]], backdoor_set: Set[str]) -> Set[str]:
         """
         Validate backdoor path
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
         
@@ -62,14 +62,14 @@ class Validation_Protocol(Protocol):
         """
         pass
 
-    def validate_frontdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]], frontdoor_set: Set[str]) -> Set[str]:
+    def validate_frontdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]], frontdoor_set: Set[str]) -> Set[str]:
         """
         Validate frontdoor set
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 
@@ -80,14 +80,14 @@ class Validation_Protocol(Protocol):
         """
         pass
 
-    def validate_iv(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]], instrumental_variables: Set[str]) -> Set[str]:
+    def validate_iv(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]], instrumental_variables: Set[str]) -> Set[str]:
         """
         Suggest instrumental variables
 
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
         

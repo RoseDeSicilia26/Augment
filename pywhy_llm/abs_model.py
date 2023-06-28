@@ -13,7 +13,7 @@ class Model_Protocol(Protocol):
         """
         pass
 
-    def suggest_variable_relationships(self, variable_descriptions: Dict[str, str]) -> Set[Tuple[str, str, str]]:
+    def suggest_variable_relationships(self, variable_descriptions: Dict[str, str]) -> Dict[Tuple[str, str], str]:
         """
         Suggest the relationships between variables.
 
@@ -21,13 +21,11 @@ class Model_Protocol(Protocol):
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
         
         Returns:
-            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
-
-        
+            variable_relationships Dict[Tuple[str, str], str]: A dictionary where the keys are edges, where it's assumed that parent is first, child is second, and the values are an explanation for how their relationship occurs        
         """
         pass
 
-    def suggest_confounders(self, variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
+    def suggest_confounders(self, variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str]) -> Set[Tuple[str, str]]:
         """
         Suggest confounders
 
