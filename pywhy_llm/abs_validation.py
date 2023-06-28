@@ -24,7 +24,7 @@ class Validation_Protocol(Protocol):
             variable_relationships Dict[Tuple[str, str], str]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
         Returns:
-            variable_relationships Set[Tuple[str, str, str]]: validated relationships
+            variable_relationships Dict[Tuple[str, str], str]: validated relationships
         """
         pass
 
