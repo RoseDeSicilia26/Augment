@@ -50,7 +50,7 @@ class Identification_Protocol(Protocol):
         """
         pass
 
-    def suggest_analysis_code(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> str:
+    def suggest_analysis_code(self,  variable_descriptions: Dict[str, str], variable_relationships: Dict[Tuple[str, str], str], confounders: Set[Tuple[str, str]]) -> str:
         """
         Suggest code to run identification analysis
 
