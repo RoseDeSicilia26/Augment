@@ -1,82 +1,109 @@
-from abc import ABC, abstractmethod
-from typing import List, Dict, Optional
-from context import context, context_builder
+from typing import List, Dict, Set, Tuple, Protocol
 
-class ABS_Validation(ABC):
+class Validation_Protocol(Protocol):
 
-    @staticmethod
-    @abstractmethod
-    def validate_variable_descriptions(self):
+    def validate_variable_descriptions(self, variable_descriptions: Dict[str, str]) -> Dict[str, str]:
         """
-        Validate the provided or suggested descriptions
+        Validate the descriptions for each variable.
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+        Returns:
+            variable_descriptions Dict[str, str]: validated dictionary mapping variable names to their descriptions.
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def validate_relationships(self):
+    def validate_relationships(self, variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
         """
         Validate the suggested relationships
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+
+        Returns:
+            variable_relationships Set[Tuple[str, str, str]]: validated relationships
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def validate_confounders(self):
+    def validate_confounders(self, variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
         """
-        Validate the suggested confounders
+        Validate set of confounders
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+
+        Returns:
+            confounders Set[Tuple[str, str]]: validated set of confounders
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def validate_backdoor(self):
+    def validate_backdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]], backdoor_set: Set[str]) -> Set[str]:
         """
-        Validate the suggested backdoor set
+        Validate backdoor path
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+        
+            backdoor_set Set[str]: set of varaibles in backdoor set
+
+        Returns:
+            backdoor_set Set[str]: validated backdoor set
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def validate_frontdoor(self):
+    def validate_frontdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]], frontdoor_set: Set[str]) -> Set[str]:
         """
-        Validate the suggested frontdoor set
+        Validate frontdoor set
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+
+            frontdoor_set Set[str]: set of varaibles in frontdoor set
+
+        Returns:
+            frontdoor_set Set[str]: validated frontdoor set
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def validate_iv(self):
+    def validate_iv(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]], instrumental_variables: Set[str]) -> Set[str]:
         """
-        Validate the suggested instrumental variables
+        Suggest instrumental variables
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+        
+            set of instrumental variables Set[str]: set of varaibles in backdoor set
+
+        Returns:
+            set of instrumental variables Set[str]: set of varaibles in backdoor set
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def suggest_validation_code(self):
+    def suggest_validation_code(self) -> str:
         """
         Suggest code to run validation analysis
 
-        Args:
+        Returns:
+            code str: code to run validation
 
         """
         pass

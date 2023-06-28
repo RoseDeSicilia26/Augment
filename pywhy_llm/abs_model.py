@@ -1,37 +1,42 @@
-from abc import ABC, abstractmethod
-from typing import List, Dict, Optional
-from context import context, context_builder
+from typing import List, Dict, Set, Tuple, Protocol
 
-class ABS_Model(ABC):
-    @staticmethod
-    @abstractmethod
-    def suggest_variable_descriptions(self) -> None:
+class Model_Protocol(Protocol):
+    def suggest_variable_descriptions(self,  variable_names: List[str]) -> Dict[str, str]:
         """
         Suggest the descriptions for each variable.
 
         Args:
-            variable_descriptions (Optional[Dict[str, str]]): A dictionary mapping variable names to their descriptions.
+            variable_names List[str]: List of variable names
+
+        Returns:
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def suggest_variable_relationships(self) -> None:
+    def suggest_variable_relationships(self, variable_descriptions: Dict[str, str]) -> Set[Tuple[str, str, str]]:
         """
         Suggest the relationships between variables.
 
         Args:
-            variable_relationships (Optional[Dict[str, List[str]]]): A dictionary mapping each variable to a list of its related variables.
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+        
+        Returns:
+            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+
+        
         """
         pass
 
-    @staticmethod   
-    @abstractmethod
-    def suggest_confounders(self):
+    def suggest_confounders(self, variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]]) -> Set[Tuple[str, str]]:
         """
         Suggest confounders
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+        Returns:
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
         """
         pass

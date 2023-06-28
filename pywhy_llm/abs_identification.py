@@ -1,48 +1,67 @@
-from abc import ABC, abstractmethod
-from typing import List, Dict, Optional, Set
-from context import context, context_builder
+from typing import List, Dict, Set, Tuple, Protocol
 
-class ABS_Identification(ABC):
-    @staticmethod
-    @abstractmethod
-    def suggest_backdoor(self):
+class Identification_Protocol(Protocol):
+
+    def suggest_backdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[str]:
         """
         Suggest backdoor path
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+
+        Returns:
+            backdoor_set Set[str]: set of varaibles in backdoor set
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def suggest_frontdoor(self):
+    def suggest_frontdoor(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[str]:
         """
         Suggest frontdoor path
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+
+        Returns:
+            frontdoor_set Set[str]: set of varaibles in frontdoor set
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def suggest_iv(self):
+    def suggest_iv(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> Set[str]:
         """
         Suggest instrumental variables
 
         Args:
-            context (Context): Context object about the data
+            variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
+
+            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+
+            confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
+
+        Returns:
+            instrumental_variables Set[str]: set of varaibles in backdoor set
         """
         pass
 
-    @staticmethod
-    @abstractmethod
-    def suggest_analysis_code(self):
+    def suggest_analysis_code(self,  variable_descriptions: Dict[str, str], variable_relationships: Set[Tuple[str, str]], confounders: Set[Tuple[str, str]]) -> str:
         """
         Suggest code to run identification analysis
 
         Args:
+            backdoor_set Set[str]: set of varaibles in backdoor set
 
+            frontdoor_set Set[str]: set of varaibles in frontdoor set
+
+            set of instrumental variables Set[str]: set of varaibles in backdoor set
+
+        Returns:
+            code str: code to run analysis
         """
         pass

@@ -1,15 +1,12 @@
-from abc import ABC, abstractmethod
-from typing import List, Dict, Optional
-from context import context, context_builder
+from typing import List, Dict, Set, Tuple, Protocol
 
-class ABS_Estimation(ABC):
+class Estimation_Protocol(Protocol):
 
-    @abstractmethod
-    def suggest_estimation_code(self):
+    def suggest_estimation_code(self) -> str:
         """
         Suggest code to run the causal effect analysis
 
-        Args:
-            
+        Returns:
+            code str: suggested code for running estimation
         """
         pass
