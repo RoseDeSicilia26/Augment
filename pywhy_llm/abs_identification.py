@@ -3,32 +3,7 @@ from typing import List, Dict, Optional, Set
 from context import context, context_builder
 
 class ABS_Identification(ABC):
-
-    @abstractmethod
-    def __init__(self):
-        """
-        Create class attributes
-        
-        confounders list
-        backdoor set
-        frontdoor set
-        instrumental variables
-
-        Args:
-            context (Context): Context object about the data
-        """
-        pass
-
-    @abstractmethod
-    def suggest_confounders(self):
-        """
-        Suggest confounders
-
-        Args:
-            context (Context): Context object about the data
-        """
-        pass
-
+    @staticmethod
     @abstractmethod
     def suggest_backdoor(self):
         """
@@ -39,6 +14,7 @@ class ABS_Identification(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
     def suggest_frontdoor(self):
         """
@@ -49,6 +25,7 @@ class ABS_Identification(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
     def suggest_iv(self):
         """
@@ -59,6 +36,7 @@ class ABS_Identification(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
     def suggest_analysis_code(self):
         """

@@ -3,24 +3,10 @@ from typing import List, Dict, Optional
 from context import context, context_builder
 
 class ABS_Validation(ABC):
-    @abstractmethod
-    def __init__(self):
-        """
-        Create class attributes to hold
-        
-        context object
-        confounders list
-        backdoor set
-        frontdoor set
-        instrumental variables
 
-        Args:
-            context (Context): Context object about the data
-        """
-        pass
-
+    @staticmethod
     @abstractmethod
-    def validated_variable_descriptions(self):
+    def validate_variable_descriptions(self):
         """
         Validate the provided or suggested descriptions
 
@@ -29,8 +15,9 @@ class ABS_Validation(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def validated_relationships(self):
+    def validate_relationships(self):
         """
         Validate the suggested relationships
 
@@ -39,8 +26,9 @@ class ABS_Validation(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def validated_confounders(self):
+    def validate_confounders(self):
         """
         Validate the suggested confounders
 
@@ -49,8 +37,9 @@ class ABS_Validation(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def validated_backdoor(self):
+    def validate_backdoor(self):
         """
         Validate the suggested backdoor set
 
@@ -59,8 +48,9 @@ class ABS_Validation(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def validated_frontdoor(self):
+    def validate_frontdoor(self):
         """
         Validate the suggested frontdoor set
 
@@ -69,8 +59,9 @@ class ABS_Validation(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
-    def validated_iv(self):
+    def validate_iv(self):
         """
         Validate the suggested instrumental variables
 
@@ -79,6 +70,7 @@ class ABS_Validation(ABC):
         """
         pass
 
+    @staticmethod
     @abstractmethod
     def suggest_validation_code(self):
         """
