@@ -32,7 +32,7 @@ class Model_Protocol(Protocol):
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str]]: A set of edges in the form of tuples, where it's assumed that parent is first, child is second
+            variable_relationships Dict[Tuple[str, str], str]: A dictionary where the keys are edges, where it's assumed that parent is first, child is second, and the values are an explanation for how their relationship occurs     
 
         Returns:
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
