@@ -21,7 +21,7 @@ class Validation_Protocol(Protocol):
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+            variable_relationships Dict[Tuple[str, str], str]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
         Returns:
             variable_relationships Set[Tuple[str, str, str]]: validated relationships
@@ -35,7 +35,7 @@ class Validation_Protocol(Protocol):
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+            variable_relationships Dict[Tuple[str, str], str]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 
@@ -51,7 +51,7 @@ class Validation_Protocol(Protocol):
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+            variable_relationships Dict[Tuple[str, str], str]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
         
@@ -69,7 +69,7 @@ class Validation_Protocol(Protocol):
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+            variable_relationships Dict[Tuple[str, str], str]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
 
@@ -87,7 +87,7 @@ class Validation_Protocol(Protocol):
         Args:
             variable_descriptions Dict[str, str]: A dictionary mapping variable names to their descriptions.
 
-            variable_relationships Set[Tuple[str, str, str]]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
+            variable_relationships Dict[Tuple[str, str], str]: A set of edges with an explanation for how their relationship occurs, where it's assumed that parent is first, child is second, and explanation is third
 
             confounders Set[Tuple[str, str]]: Set of confounders along with a reasoning or explanation for how the confounding occurs
         
