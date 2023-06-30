@@ -2,8 +2,6 @@ from typing import List, Dict, Set, Tuple, Protocol
 from ._model import Model_Protocol
 import guidance
 import re
-import openai
-openai.api_key = 'api_key'
 
 class Suggest_Model(Model_Protocol):
     
@@ -51,9 +49,9 @@ class Suggest_Model(Model_Protocol):
         return self.generate_confounders(variables_and_descriptions, llm, treatment, outcome)
 
     
-    def generate_confounders(self, variables_and_descriptions: Dict[str, str], llm: guidance.llms, treatment: str, outcome: str) -> Dict[str, Tuple(str, str)]:
+    def generate_confounders(self, variables_and_descriptions: Dict[str, str], llm: guidance.llms, treatment: str, outcome: str) -> Dict[str, str]:
 
-        variables_and_descriptions_subset = ', '.join(f'{key}: {value}' for key, value in variables_and_descriptions.items() if key not in [treatment, outcome])
+        all_vars_but_t_o = ', '.join(f'{key}: {value}' for key, value in variables_and_descriptions.items() if key not in [treatment, outcome])
 
         generate_confounders = guidance(
                 
@@ -86,7 +84,7 @@ class Suggest_Model(Model_Protocol):
                 ...
 
                 <confounder>name_of_nth_confounder</confounder>: <explanation>Description of nth variable. 
-                Explanation for why and how the selected variable is or is not a confounder.<explanation>
+                Explanation for why and how the selected variable is or is not a confounder.</explanation>
                 <category>True or false</category>
             {{~/system}}
 
@@ -108,7 +106,7 @@ class Suggest_Model(Model_Protocol):
         output = generate_confounders(
         treatment=treatment, 
         outcome=outcome, 
-        variables_and_descriptions=variables_and_descriptions_subset,
+        variables_and_descriptions=all_vars_but_t_o,
         llm=llm)
 
         # Find all occurrences of confounders, explanations, and categories
@@ -124,15 +122,68 @@ class Suggest_Model(Model_Protocol):
         return suggested_confounders
     
     
-    def suggest_variable_relationships(self, variables_and_descriptions: Dict[str, str], suggested_confounders: Dict[str, Tuple(str, str)] = None, treatment: str, outcome: str, llm: guidance.llms) -> Dict[Tuple[str, str], str]:
+    def suggest_variable_relationships(self, variables_and_descriptions: Dict[str, str], treatment: str, outcome: str, llm: guidance.llms, confounders_and_reasoning: Dict[str, str] = None) -> Dict[Tuple[str, str], str]:
 
-        pass
+        return self.generate_variable_relationships(variables_and_descriptions, confounders_and_reasoning, treatment, outcome, llm)
 
 
-    def generate_variable_relationships(self, variables_and_descriptions: Dict[str, str], llm: guidance.llms) -> Dict[Tuple[str, str], str]:
+    def generate_variable_relationships(self, variables_and_descriptions: Dict[str, str], treatment: str, outcome: str, llm: guidance.llms, , confounders_and_reasoning: Dict[str, str] = None) -> Dict[Tuple[str, str], str]:
 
-        pass
+        relevant_variables_and_descriptions = {key: value for key, value in variables_and_descriptions.items() if key == treatment or key == outcome or key in confounders_and_reasoning.keys()}
 
+
+        generate_relationships = guidance('''
+        {{#system~}}
+        You are a helpful assistant with expertise in causal inference. You will assist me in discovering the causal graph representing my dataset. 
+        I will provide you with context about the dataset by showing you the the columns along with their associated descriptions.  
+        I will then go variable by variable and ask you to identify its children (should it have any), where a child is another variable that is directly caused by the specified variable. Show your work and take it step by step to make sure that the variables you identify are indeed children of the specified variable.
+        ------------------------------------------
+        Input:
+
+            Dataset schema with descriptions
+                name_of_first_variable: Description of first variable.
+                name_of_second_variable: Description of second variable.
+                ...
+                name_of_nth_confounder: Description of nth variable.     
+
+            Selected variable     
+            Does selected_variable have any children present in the dataset?
+
+        Output (if the selected variable has (a) child(dren) present in the dataset):
+            <child>child_1</child><explanation>Explanation for why and how this varaible is child of the selected variable.</explanation>
+            ...
+            <child>child_n</child><explanation>Explanation for why and how this varaible is child of the selected variable.</explanation>
+
+        Output (if the selected variable does not have a child present in the dataset): 
+            <null>  
+        {{~/system}}
+
+        {{#user~}}
+        Dataset schema with descriptions
+        {{variables_and_descriptions}}
+
+        Does {{variable}} have any children present in the dataset?  
+        {{~/user}}
+
+        {{#assistant~}}
+        {{gen 'children' temperature=0.7}}
+        {{~/assistant}} 
+        
+        ''')
+
+        relationships_and_descriptions : Dict[Tuple[str, str], str] = []
+
+        for var, desc in relevant_variables_and_descriptions.items():
+            output = generate_relationships(variables_and_descriptions=relevant_variables_and_descriptions, variable=var, llm=llm)
+
+            children = re.findall(r'<child>(.*?)</child>', output['children'])
+            explanations = re.findall(r'<explanation>(.*?)</explanation>', output['children'])
+
+            for i in range(len(children)):
+                relationships_and_descriptions[(var, children[i])] = explanations[i]
+
+
+        return relationships_and_descriptions
 
     
 
