@@ -2,6 +2,24 @@ from typing import List, Dict, Set, Tuple, Protocol
 import guidance
 
 class Model_Protocol(Protocol):
+    def suggest_dataset_description(self, variable_names: List[str], llm: guidance.llms) -> str:
+        """
+        Suggest a description for the dataset.
+
+        Args:
+            variable_names: List[str]
+                List of variable names.
+
+            llm: guidance.llms
+                User provided llm access.
+
+        Returns:
+            dataset_description: str
+                A description of the dataset.
+        """
+        pass
+
+
     def suggest_variable_descriptions(self, variable_names: List[str], llm: guidance.llms) -> Dict[str, str]:
         """
         Suggest the descriptions for each variable.
