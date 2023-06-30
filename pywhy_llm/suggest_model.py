@@ -1,47 +1,48 @@
 from typing import List, Dict, Set, Tuple, Protocol
-from ._model import Model_Protocol
+from _model import Model_Protocol
 import guidance
 import re
 
 class Suggest_Model(Model_Protocol):
     
-    def suggest_variable_descriptions(self, variable_names: List[str], llm: guidance.llms) -> Dict[str, str]:
+    def suggest_descriptions(self, variable_names: List[str], llm: guidance.llms) -> Dict[str, str]:
         
+        return self.generate_descriptions(variable_names, llm)
+
+
+    def generate_descriptions(self, variable_names: List[str], llm: guidance.llms) -> Dict[str, str]:
+
+        generate_description = guidance(    
+            '''
+            {{#system~}}
+            You are a helpful assistant with expertise in causal inference. You are helping me better understand a dataset by providing me with a description of the variables. I will provide you with the name of a column variable within the dataset and you will provide a description for that column variable. Let's take it step by step to make sure the description is relevant, succinct, and clear. 
+            Here is an example:
+            ------------------------------------------
+            variable_name
+            description
+            ------------------------------------------
+            age
+            The age of the patient in years. 
+            {{~/system}}
+
+            {{#user~}}
+            {{variable}}
+            {{~/user}}
+                        
+            {{#assistant~}}
+            {{gen 'description' temperature=0.7}}
+            {{~/assistant}}
+            ''')
+
         variables_and_descriptions : Dict[str, str] = {}
 
         for variable_name in variable_names:
 
-            variables_and_descriptions[variable_name] = self.generate_descriptions(variable=variable_name, llm=llm)
+            output = generate_description(variable_name=variable_name, llm=llm)
+
+            variables_and_descriptions[variable_name] = output['description']
     
         return variables_and_descriptions
-
-
-    def generate_descriptions(self, variable_name, field, llm):
-        generate_description_chat = guidance(    
-        '''
-        {{#system~}}
-        You are a helpful causality assistant with expertise in causal inference. You are helping me better understand a dataset by providing me with a description of the variable. I will provide you with the name of a column varialbe within the dataset and you will provide a description for that column variable. Let's take it step by step to make sure the description is relevant, succinct, and clear. 
-        Here is an example:
-        ------------------------------------------
-        variable_name
-        variable_name: description
-        ------------------------------------------
-        age
-        age: The age of the patient in years. 
-        {{~/system}}
-
-        {{#user~}}
-        {{variable}}
-        {{~/user}}
-                    
-        {{#assistant~}}
-        {{gen 'description' temperature=1 max_tokens=300}}
-        {{~/assistant}}
-        ''')
-
-        output = generate_description_chat(variable=variable_name, llm=llm)
-
-        return output["description"]
 
 
     def suggest_confounders(self, variables_and_descriptions: Dict[str, str], llm: guidance.llms, treatment: str, outcome: str) -> Set[Tuple[str, str]]:
@@ -127,7 +128,7 @@ class Suggest_Model(Model_Protocol):
         return self.generate_variable_relationships(variables_and_descriptions, confounders_and_reasoning, treatment, outcome, llm)
 
 
-    def generate_variable_relationships(self, variables_and_descriptions: Dict[str, str], treatment: str, outcome: str, llm: guidance.llms, , confounders_and_reasoning: Dict[str, str] = None) -> Dict[Tuple[str, str], str]:
+    def generate_variable_relationships(self, variables_and_descriptions: Dict[str, str], treatment: str, outcome: str, llm: guidance.llms, confounders_and_reasoning: Dict[str, str] = None) -> Dict[Tuple[str, str], str]:
 
         relevant_variables_and_descriptions = {key: value for key, value in variables_and_descriptions.items() if key == treatment or key == outcome or key in confounders_and_reasoning.keys()}
 
